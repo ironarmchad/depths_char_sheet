@@ -24,8 +24,23 @@
                     </a>
 
                     <ul class="nav navbar-nav pull-right">
-                        <li><a href=""> Home </a></li>
-                        <li><a href=""> Register </a></li>
+                        <li><a href="{{ url_for('authentication.register_user') }}"> Register </a></li>
+                        <li>
+                            {% if current_user.is_authenticated %}
+                                <a href="{{ url_for('authentication.log_out_user') }}"> Sign Out</a>
+                            {% else %}
+                                <a href="{{ url_for('authentication.do_the_login') }}">Sign In</a>
+                            {% endif %}
+                        </li>
+                        <li>
+                            <a href="">
+                                {% if current_user.is_authenticated %}
+                                    Logged In as <b style="color:#6666CC">{{ current_user.user_name.title() }}</b>
+                                {% else %}
+                                    Not Logged In
+                                {% endif %}
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </nav>
