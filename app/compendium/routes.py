@@ -43,3 +43,7 @@ def edit_compendium_page(page_id):
         return redirect(url_for('main.home_page'))
     return render_template("edit_compend.html", form=form)
 
+@compend.route("/compendium/all")
+def display_all():
+    compend_pages = CompendiumEntry.query.all()
+    return render_template('all_pages.html', pages=compend_pages)

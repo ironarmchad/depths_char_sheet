@@ -1,0 +1,12 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <div class="container">
+        <h4>List of All Compendium Pages</h4>
+        <hr><br>
+        {% for page in pages %}
+            <a href="{{ url_for('compend.display', entry=page.page_id) }}">{{ page.page_name }}</a>
+        {% endfor %}
+    </div>
+
+{% endblock %}
