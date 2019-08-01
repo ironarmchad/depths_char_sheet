@@ -19,7 +19,7 @@ def create_compendium_page():
     form = CreateCompendForm()
 
     if form.validate_on_submit():
-        compend_page = CompendiumEntry(page_name=form.page_name.data, contents=form.page_content.data)
+        compend_page = CompendiumEntry(page_name=form.page_name.data, contents=form.contents.data)
 
         db.session.add(compend_page)
         db.session.commit()
@@ -27,3 +27,19 @@ def create_compendium_page():
 
         return redirect(url_for('main.home_page'))
     return render_template('create_compend.html', form=form)
+
+
+@compend.route('/compendium/edit/<page_id>', methods=['GET', 'POST'])
+@login_required
+def edit_compendium_page(page_id):
+    compend_page = CompendiumEntry.query.get(page_id)
+    form = EditCompendForm(obj=compend_page)
+    if form.validate_on_submit():
+        compend_page.page_name = form.page_name.data
+        compend_page.contents = form.contents.data
+        db.session.add(compend_page)
+        db.session.commit()
+        flash('Compendium page edited.')
+        return redirect(url_for('main.home_page'))
+    return render_template("edit_compend.html", form=form)
+
