@@ -28,6 +28,9 @@ def create_app(config_type):
     from app.character import main
     app.register_blueprint(main)
 
+    from app.compendium import compend
+    app.register_blueprint(compend)
+
     from app.auth import authentication
     app.register_blueprint(authentication)
 
