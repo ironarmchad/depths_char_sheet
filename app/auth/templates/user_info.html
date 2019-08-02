@@ -1,0 +1,21 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+    <div class="container">
+        <br>
+        <h4>{{ user.user_name }}</h4>
+        <hr>
+        <ul>
+            <li>User ID: {{ user.id }}</li>
+            <li>User Type: {{ user.role }}</li>
+        </ul>
+    </div>
+    <br><br>
+    <div class="container">
+        {% if current_user.role == 'SUPER' %}
+            <a class="btn btn-primary" href="{{ url_for('authentication.user_change_role', user_id=user.id) }}" role="button">Change Role</a>
+        {% endif %}
+    </div>
+
+{% endblock content %}

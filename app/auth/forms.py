@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, PasswordField, BooleanField
+from wtforms import StringField, SubmitField, PasswordField, BooleanField, SelectField
 from wtforms.validators import DataRequired, Length, EqualTo
 
 
@@ -18,3 +18,8 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     stay_logged_in = BooleanField('stay logged-in')
     submit = SubmitField()
+
+
+class ChangeUserRole(FlaskForm):
+    user_role = SelectField('User Role', choices=[('BASIC', 'BASIC'), ('ADVANCED', 'ADVANCED')])
+    submit = SubmitField('Change')

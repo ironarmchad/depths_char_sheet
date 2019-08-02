@@ -2,8 +2,9 @@ from app.compendium import compend
 from app import db
 from app.compendium.models import CompendiumEntry
 from flask import render_template, redirect, url_for, flash
-from flask_login import login_required
 from app.compendium.forms import EditCompendForm, CreateCompendForm
+from app.auth.models import login_required
+from flask_login import current_user
 
 
 @compend.route('/compendium/<entry>')
@@ -14,8 +15,9 @@ def display(entry):
 
 
 @compend.route('/compendium/create', methods=['GET', 'POST'])
-@login_required
+@login_required()
 def create_compendium_page():
+    print(current_user)
     form = CreateCompendForm()
 
     if form.validate_on_submit():
@@ -30,7 +32,7 @@ def create_compendium_page():
 
 
 @compend.route('/compendium/edit/<page_id>', methods=['GET', 'POST'])
-@login_required
+@login_required()
 def edit_compendium_page(page_id):
     compend_page = CompendiumEntry.query.get(page_id)
     form = EditCompendForm(obj=compend_page)

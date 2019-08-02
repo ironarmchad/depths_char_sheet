@@ -1,8 +1,9 @@
 from flask import render_template, request, flash, redirect, url_for
-from flask_login import login_user, logout_user, login_required, current_user
-from app.auth.forms import RegistrationForm, LoginForm
+from flask_login import login_user, logout_user, current_user
+from app import db
+from app.auth.forms import RegistrationForm, LoginForm, ChangeUserRole
 from app.auth import authentication
-from app.auth.models import User
+from app.auth.models import User, login_required
 
 
 @authentication.route('/register', methods=['GET', 'POST'])
@@ -41,10 +42,49 @@ def do_the_login():
 
 
 @authentication.route('/logout')
-@login_required
+@login_required()
 def log_out_user():
     logout_user()
     return redirect(url_for('main.home_page'))
+
+
+@authentication.route('/user')
+@login_required()
+def user_list():
+    if current_user.role == 'SUPER':
+        users = User.query.all()
+        return render_template('user_list.html', users=users)
+    else:
+        return redirect(url_for('authentication.user_info', user_id=current_user.id))
+
+
+@authentication.route('/user/<user_id>')
+@login_required()
+def user_info(user_id):
+    print(type(user_id))
+    if current_user.role == 'SUPER' or current_user.id == int(user_id):
+        user = User.query.get(user_id)
+        return render_template('user_info.html', user=user)
+    else:
+        return render_template('no_peeking.html')
+
+
+@authentication.route('/user/<user_id>/change_role', methods=['GET', 'POST'])
+@login_required('SUPER')
+def user_change_role(user_id):
+    form = ChangeUserRole()
+    user = User.query.get(user_id)
+    if form.validate_on_submit():
+        print(form.user_role.data)
+        user.role = form.user_role.data
+        flash("User Role Updated")
+        db.session.add(user)
+        db.session.commit()
+        return redirect(url_for('authentication.user_info', user_id=user.id))
+
+    return render_template('change_user_role.html', form=form)
+
+
 
 
 @authentication.app_errorhandler(404)

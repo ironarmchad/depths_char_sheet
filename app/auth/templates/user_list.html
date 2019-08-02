@@ -1,0 +1,15 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+    <div class="container">
+        <h4>User List</h4>
+        <hr>
+        <ul>
+            {% for user in users: %}
+                <li><a href="{{ url_for('authentication.user_info', user_id=user.id) }}">{{ user.user_name }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+
+{% endblock content %}
