@@ -15,7 +15,7 @@ def display(entry):
 
 
 @compend.route('/compendium/create', methods=['GET', 'POST'])
-@login_required()
+@login_required('ADVANCED')
 def create_compendium_page():
     print(current_user)
     form = CreateCompendForm()
@@ -32,7 +32,7 @@ def create_compendium_page():
 
 
 @compend.route('/compendium/edit/<page_id>', methods=['GET', 'POST'])
-@login_required()
+@login_required('ADVANCED')
 def edit_compendium_page(page_id):
     compend_page = CompendiumEntry.query.get(page_id)
     form = EditCompendForm(obj=compend_page)
@@ -44,6 +44,7 @@ def edit_compendium_page(page_id):
         flash('Compendium page edited.')
         return redirect(url_for('main.home_page'))
     return render_template("edit_compend.html", form=form)
+
 
 @compend.route("/compendium/all")
 def display_all():
