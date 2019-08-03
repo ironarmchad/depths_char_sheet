@@ -2,9 +2,9 @@
 
 {% block content %}
 
+    <br>
     <div class="container">
-        <br>
-        <h4>{{ user.user_name }}</h4>
+        <h3>{{ user.user_name }}</h3>
         <hr>
         <ul>
             <li>User ID: {{ user.id }}</li>
@@ -12,6 +12,18 @@
         </ul>
     </div>
     <br><br>
+
+    <div class="container">
+        <h4>Your Characters</h4>
+        <hr>
+        <ul>
+            {% for character in characters: %}
+                <li><a href="{{ url_for('main.character_page', char_id=character.id) }}">{{ character.name }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+    <br><br>
+
     <div class="container">
         {% if current_user.role == 'SUPER' %}
             <a class="btn btn-primary" href="{{ url_for('authentication.user_change_role', user_id=user.id) }}" role="button">Change Role</a>

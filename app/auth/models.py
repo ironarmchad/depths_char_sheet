@@ -13,7 +13,6 @@ class User(UserMixin, db.Model):
     role = db.Column(db.String(10))
 
     def check_password(self, password):
-        print(password)
         return bcrypt.check_password_hash(self.user_password, password)
 
     @classmethod

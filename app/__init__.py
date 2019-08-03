@@ -12,6 +12,7 @@ login_manager.login_view = 'authentication.do_the_login'
 login_manager.session_protection = 'strong'
 bcrypt = Bcrypt()
 
+
 def create_app(config_type):
     # declarations
     app = Flask(__name__)

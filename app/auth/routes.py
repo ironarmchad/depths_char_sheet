@@ -1,9 +1,10 @@
 from flask import render_template, request, flash, redirect, url_for
 from flask_login import login_user, logout_user, current_user
 from app import db
-from app.auth.forms import RegistrationForm, LoginForm, ChangeUserRole
 from app.auth import authentication
 from app.auth.models import User, login_required
+from app.auth.forms import RegistrationForm, LoginForm, ChangeUserRole
+from app.character.models import Character
 
 
 @authentication.route('/register', methods=['GET', 'POST'])
@@ -61,10 +62,10 @@ def user_list():
 @authentication.route('/user/<user_id>')
 @login_required()
 def user_info(user_id):
-    print(type(user_id))
     if current_user.role == 'SUPER' or current_user.id == int(user_id):
         user = User.query.get(user_id)
-        return render_template('user_info.html', user=user)
+        characters = Character.query.filter_by(owner=user_id).all()
+        return render_template('user_info.html', user=user, characters=characters)
     else:
         return render_template('no_peeking.html')
 
@@ -75,16 +76,13 @@ def user_change_role(user_id):
     form = ChangeUserRole()
     user = User.query.get(user_id)
     if form.validate_on_submit():
-        print(form.user_role.data)
         user.role = form.user_role.data
         flash("User Role Updated")
         db.session.add(user)
         db.session.commit()
-        return redirect(url_for('authentication.user_info', user_id=user.id))
+        return redirect(url_for('authentication.user_info', user_id=int(user.id)))
 
     return render_template('change_user_role.html', form=form)
-
-
 
 
 @authentication.app_errorhandler(404)

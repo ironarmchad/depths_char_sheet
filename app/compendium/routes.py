@@ -4,7 +4,6 @@ from app.compendium.models import CompendiumEntry
 from flask import render_template, redirect, url_for, flash
 from app.compendium.forms import EditCompendForm, CreateCompendForm
 from app.auth.models import login_required
-from flask_login import current_user
 
 
 @compend.route('/compendium/<entry>')
@@ -17,7 +16,6 @@ def display(entry):
 @compend.route('/compendium/create', methods=['GET', 'POST'])
 @login_required('ADVANCED')
 def create_compendium_page():
-    print(current_user)
     form = CreateCompendForm()
 
     if form.validate_on_submit():
