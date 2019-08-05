@@ -16,11 +16,19 @@
     <div class="container">
         <h4>Your Characters</h4>
         <hr>
-        <ul>
-            {% for character in characters: %}
-                <li><a href="{{ url_for('main.character_page', char_id=character.id) }}">{{ character.name }}</a></li>
-            {% endfor %}
-        </ul>
+        {% for character in characters: %}
+            <div class="row">
+                <div class="col">
+                    <a href="{{ url_for('main.character_page', char_id=character.id) }}">{{ character.name }}</a>
+                </div>
+                <div class="col">
+                    <div class="btn-group">
+                        <a class="btn btn-secondary" href="{{ url_for('main.character_edit', char_id=character.id) }}" role="Button">Edit</a>
+                        <a class="btn btn-danger" href="{{ url_for('main.character_delete', char_id=character.id) }}" role="Button">Delete</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
     </div>
     <br><br>
 

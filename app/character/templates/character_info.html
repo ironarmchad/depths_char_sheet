@@ -1,0 +1,35 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+    <div class="container">
+        <h3>{{ character.name }}</h3>
+        <h6>Character belongs to {{ owner.user_name }}</h6>
+        <p>{{ character.lore }}</p>
+    </div>
+
+    <div class="container">
+        <h4>Character Stats</h4>
+        <div class="row">
+            <div class="col"><span>Strength: {{ character.strength }}</span></div>
+            <div class="col"><span>Willpower: {{ character.willpower }}</span></div>
+        </div>
+        <div class="row">
+            <div class="col"><span>Reflex: {{ character.reflex }}</span></div>
+            <div class="col"><span>Attunement: {{ character.attunement }}</span></div>
+        </div>
+        <div class="row">
+            <div class="col"><span>Vitality: {{ character.vitality }}</span></div>
+            <div class="col"><span>Imagination: {{ character.imagination }}</span></div>
+        </div>
+        <div class="row">
+            <div class="col"><span>Speed: {{ character.speed }}</span></div>
+            <div class="col"><span>Luck: {{ character.luck }}</span></div>
+        </div>
+        <div class="row">
+            <div class="col"><span>Awareness: {{ character.awareness }}</span></div>
+            <div class="col"><span>Charisma: {{ character.charisma }}</span></div>
+        </div>
+    </div>
+
+{% endblock content %}
