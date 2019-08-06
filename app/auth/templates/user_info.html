@@ -14,12 +14,19 @@
     <br><br>
 
     <div class="container">
-        <h4>Your Characters</h4>
-        <hr>
+        <div class="row">
+            <div class="col">
+                <h4>Your Characters</h4>
+            </div>
+            <div class="col">
+                <a class="btn btn-primary" href="{{ url_for('main.character_create') }}" role="button">New</a>
+            </div>
+        </div>
+        <br>
         {% for character in characters: %}
             <div class="row">
                 <div class="col">
-                    <a href="{{ url_for('main.character_page', char_id=character.id) }}">{{ character.name }}</a>
+                    <a href="{{ url_for('main.character_page', char_id=character.id) }}" style="font-size: 22px">{{ character.name }}</a>
                 </div>
                 <div class="col">
                     <div class="btn-group">

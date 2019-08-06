@@ -1,11 +1,11 @@
-html, body {height: 100%; margin: 0; padding: 0}
+html, body {height: 100%; margin: 0; padding: 0;}
 h1, h2, h3, h4 { font-family: 'Libre Baskerville', serif }
 p, li { font-size: small}
 ul { margin: 0 }
 footer{ position: absolute; width: 100%; left: 0; bottom: 0; height: 40px }
 a h3 {position: relative; left: 10%}
 
-.navebar-dark { height: 4%; width: 80% }
+.navebar-default { height: 4%; width: 80%;}
 .ftr {padding: 25px}
 .wrapper {position: relative; min-height: 120%;}
 .title { color: floralwhite }
