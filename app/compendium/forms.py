@@ -6,11 +6,11 @@ from wtforms.widgets import TextArea
 
 class EditCompendForm(FlaskForm):
     page_name = StringField("Page Name", validators=[DataRequired()])
-    contents = StringField("Contents", render_kw={"rows": 70, "cols": 20})
+    contents = StringField("Contents", widget=TextArea(), render_kw={"rows": 20, "cols": 20})
     submit = SubmitField('Update')
 
 
 class CreateCompendForm(FlaskForm):
     page_name = StringField("Page Name", validators=[DataRequired()])
-    contents = StringField("Contents", widget=TextArea())
+    contents = StringField("Contents", widget=TextArea(), render_kw={'rows':20, 'cols': 20})
     submit = SubmitField('Create')

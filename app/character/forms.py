@@ -1,11 +1,24 @@
 from flask_wtf import FlaskForm
 from wtforms import SubmitField, StringField, IntegerField
 from wtforms.validators import DataRequired
+from wtforms.widgets import TextArea
+
+
+class GameCreateForm(FlaskForm):
+    game_name = StringField('Name', validators=[DataRequired()])
+    game_lore = StringField('Lore', render_kw={'rows': 70, 'cols': 20})
+    submit = SubmitField()
+
+
+class GameEditForm(FlaskForm):
+    game_name = StringField('Name', validators=[DataRequired()])
+    game_lore = StringField('Lore', render_kw={'rows': 70, 'cols': 20})
+    submit = SubmitField()
 
 
 class CreateCharacterForm(FlaskForm):
     char_name = StringField('Name', validators=[DataRequired()])
-    char_lore = StringField('Lore')
+    char_lore = StringField('Lore', render_kw={'rows': 70, 'cols': 20})
     char_strength = IntegerField('Strength', validators=[DataRequired()])
     char_reflex = IntegerField('Reflex', validators=[DataRequired()])
     char_vitality = IntegerField('Vitality', validators=[DataRequired()])

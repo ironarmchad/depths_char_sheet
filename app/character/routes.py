@@ -1,7 +1,7 @@
 from app import db
 from app.character import main
-from app.character.models import Character
-from app.character.forms import CreateCharacterForm, EditCharacterForm
+from app.character.models import Character, Game
+from app.character.forms import GameCreateForm, GameEditForm, CreateCharacterForm, EditCharacterForm
 from app.auth.models import User
 from app.auth.routes import login_required
 from flask import render_template, redirect, url_for, flash, request
@@ -11,6 +11,59 @@ from flask_login import current_user
 @main.route('/')
 def home_page():
     return render_template('home.html')
+
+
+@main.route('/game')
+@login_required()
+def game_list():
+    active_games = Game.query.filter_by(active=True)
+    inactive_games = Game.query.filter_by(active=False)
+    return render_template('game_list.html', active_games=active_games, inactive_games=inactive_games)
+
+
+@main.route('/game/create', methods=['GET', 'POST'])
+@login_required()
+def game_create():
+    form = GameCreateForm()
+    if form.validate_on_submit():
+        game = Game.create_game(game_name=form.game_name.data,
+                                st_id=current_user.id, game_lore=form.game_lore.data)
+        return redirect(url_for('main.game_info', game_id=game.id))
+    return render_template('game_create.html', form=form)
+
+
+@main.route('/game/<game_id>')
+@login_required()
+def game_info(game_id):
+    game = Game.query.get(int(game_id))
+    st_name = User.query.get(game.st_id).user_name
+    return render_template('game_info.html', game=game, st_name=st_name)
+
+
+@main.route('/game/<game_id>/edit', methods=['GET', 'POST'])
+@login_required()
+def game_edit(game_id):
+    game = Game.query.get(game_id)
+    form = GameEditForm(obj=game)
+    if form.validate_on_submit():
+        game.name = form.game_name.data
+        game.lore = form.game_lore.data
+        db.session.add(game)
+        db.session.commit()
+        return redirect(url_for('main.game_info', game_id=game_id))
+    return render_template('game_edit.html', form=form)
+
+
+@main.route('/game/<game_id>/edit', methods=['GET', 'POST'])
+@login_required
+def game_delete(game_id):
+    game = Game.query.get(game_id)
+    if request.method == 'POST':
+        db.session.delete(game)
+        db.session.commit()
+        flash('Game has been deleted.')
+        return redirect('main.game_list')
+    return render_template('game_delete.html', game=game, game_id=game_id)
 
 
 @main.route('/character/<char_id>')
@@ -26,8 +79,7 @@ def character_page(char_id):
 def character_create():
     form = CreateCharacterForm()
     if form.validate_on_submit():
-        print('hello')
-        Character.create_character(
+        character = Character.create_character(
             char_name=form.char_name.data,
             char_owner=current_user.id,
             char_lore=form.char_lore.data,
@@ -43,7 +95,7 @@ def character_create():
             char_charisma=form.char_charisma.data,
             char_luck=form.char_luck.data,
         )
-        return redirect(url_for('authentication.user_info', user_id=current_user.id))
+        return redirect(url_for('character_page', char_id=character.id))
 
     return render_template('character_create.html', form=form)
 
@@ -51,26 +103,26 @@ def character_create():
 @main.route('/character/<char_id>/edit', methods=['GET', 'POST'])
 @login_required()
 def character_edit(char_id):
-    char = Character.query.get(int(char_id))
-    form = EditCharacterForm(obj=char)
+    character = Character.query.get(char_id)
+    form = EditCharacterForm(obj=character)
     if form.validate_on_submit():
-        char.name = form.char_name.data
-        char.owner = current_user.id
-        char.lore = form.char_lore.data
-        char.strength = form.char_strength.data
-        char.reflex = form.char_reflex.data
-        char.speed = form.char_speed.data
-        char.awareness = form.char_awareness.data
-        char.willpower = form.char_willpower.data
-        char.imagination = form.char_imagination.data
-        char.attunement = form.char_attunement.data
-        char.faith = form.char_faith.data
-        char.charisma = form.char_charisma.data
-        char.luck = form.char_luck.data
-        db.session.add(char)
+        character.name = form.char_name.data
+        character.owner = current_user.id
+        character.lore = form.char_lore.data
+        character.strength = form.char_strength.data
+        character.reflex = form.char_reflex.data
+        character.speed = form.char_speed.data
+        character.awareness = form.char_awareness.data
+        character.willpower = form.char_willpower.data
+        character.imagination = form.char_imagination.data
+        character.attunement = form.char_attunement.data
+        character.faith = form.char_faith.data
+        character.charisma = form.char_charisma.data
+        character.luck = form.char_luck.data
+        db.session.add(character)
         db.session.commit()
-        flash('{} is edited.'.format(char.name))
-        return redirect(url_for('authentication.user_info', user_id=current_user.id))
+        flash('{} is edited.'.format(character.name))
+        return redirect(url_for('main.character_info', char_id=char_id))
     return render_template('character_edit.html', form=form)
 
 
@@ -84,7 +136,6 @@ def character_delete(char_id):
         flash('Character deleted')
         return redirect(url_for('authentication.user_info', user_id=current_user.id))
     return render_template('character_delete.html', char=char)
-
 
 @main.route('/action/<act_id>')
 @login_required()

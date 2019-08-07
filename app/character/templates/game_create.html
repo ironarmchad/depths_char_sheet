@@ -1,9 +1,10 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-    <div class="container-fluid">
-        <h4>Create Compendium Page</h4>
+
+    <div class="container">
         {{ form.hidden_tag() }}
         {{ wtf.quick_form(form) }}
     </div>
+
 {% endblock content %}

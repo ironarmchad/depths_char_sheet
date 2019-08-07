@@ -2,9 +2,10 @@
 
 {% block content %}
 
-    <div class="container">
+    <div class="container-fluid">
         <h4>{{ compend_entry.page_name }}</h4>
-        <p> {{ compend_entry.contents }}</p>
+        <hr>
+        <p> {{ compend_entry.contents | safe }}</p>
     </div>
 
 {% endblock content %}

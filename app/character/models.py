@@ -1,11 +1,29 @@
 from app import db
 
 
+class Game(db.Model):
+    __tablename__ = 'games'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(40), nullable=False, index=True)
+    st_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    active = db.Column(db.Boolean, nullable=False)
+    lore = db.Column(db.String)
+    npc_char_list = db.Column(db.String)
+    player_char_list = db.Column(db.String)
+
+    @classmethod
+    def create_game(cls, game_name, st_id, game_lore, active=True):
+        game = cls(name=game_name, st_id=st_id, lore=game_lore, active=active)
+        db.session.add(game)
+        db.session.commit()
+        return game
+
+
 class Character(db.Model):
     __tablename__ = 'characters'
     id = db.Column(db.Integer, primary_key=True)
-    owner = db.Column(db.Integer, nullable=False)
-    name = db.Column(db.String(20), nullable=False)
+    owner = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    name = db.Column(db.String(20), nullable=False, index=True)
     lore = db.Column(db.String)
     strength = db.Column(db.Integer, nullable=False)
     reflex = db.Column(db.Integer, nullable=False)

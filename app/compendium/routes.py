@@ -29,7 +29,7 @@ def create_compendium_page():
     return render_template('create_compend.html', form=form)
 
 
-@compend.route('/compendium/edit/<page_id>', methods=['GET', 'POST'])
+@compend.route('/compendium/<page_id>/edit', methods=['GET', 'POST'])
 @login_required('ADVANCED')
 def edit_compendium_page(page_id):
     compend_page = CompendiumEntry.query.get(page_id)
@@ -40,7 +40,7 @@ def edit_compendium_page(page_id):
         db.session.add(compend_page)
         db.session.commit()
         flash('Compendium page edited.')
-        return redirect(url_for('main.home_page'))
+        return redirect(url_for('compendium.display', entry=page_id))
     return render_template("edit_compend.html", form=form)
 
 
