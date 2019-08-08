@@ -1,7 +1,7 @@
 from app import db
 from app.character import main
-from app.character.models import Character, Game
-from app.character.forms import GameCreateForm, GameEditForm, CreateCharacterForm, EditCharacterForm
+from app.character.models import Character, Game, Action
+from app.character.forms import GameCreateForm, CreateCharacterForm, ActionCreateForm
 from app.auth.models import User
 from app.auth.routes import login_required
 from flask import render_template, redirect, url_for, flash, request
@@ -44,7 +44,7 @@ def game_info(game_id):
 @login_required()
 def game_edit(game_id):
     game = Game.query.get(game_id)
-    form = GameEditForm(obj=game)
+    form = GameCreateForm(obj=game)
     if form.validate_on_submit():
         game.name = form.game_name.data
         game.lore = form.game_lore.data
@@ -68,10 +68,19 @@ def game_delete(game_id):
 
 @main.route('/character/<char_id>')
 @login_required()
-def character_page(char_id):
+def character_info(char_id):
     character = Character.query.get(int(char_id))
     owner = User.query.get(int(character.owner))
-    return render_template('character_info.html', character=character, owner=owner)
+    actions = Action.query.filter_by(char_id=character.id).order_by(Action.name)
+    naturals = [action for action in actions if action.act_type == 'natural']
+    supers = [action for action in actions if action.act_type == 'super']
+    items = [action for action in actions if action.act_type == 'item']
+    return render_template('character_info.html',
+                           character=character,
+                           owner=owner,
+                           naturals=naturals,
+                           supers=supers,
+                           items=items)
 
 
 @main.route('/character/create', methods=['GET', 'POST'])
@@ -95,7 +104,8 @@ def character_create():
             char_charisma=form.char_charisma.data,
             char_luck=form.char_luck.data,
         )
-        return redirect(url_for('character_page', char_id=character.id))
+        flash('Character created')
+        return redirect(url_for('main.character_info', char_id=character.id))
 
     return render_template('character_create.html', form=form)
 
@@ -104,7 +114,7 @@ def character_create():
 @login_required()
 def character_edit(char_id):
     character = Character.query.get(char_id)
-    form = EditCharacterForm(obj=character)
+    form = CreateCharacterForm(obj=character)
     if form.validate_on_submit():
         character.name = form.char_name.data
         character.owner = current_user.id
@@ -137,22 +147,52 @@ def character_delete(char_id):
         return redirect(url_for('authentication.user_info', user_id=current_user.id))
     return render_template('character_delete.html', char=char)
 
+
 @main.route('/action/<act_id>')
 @login_required()
-def action_page(act_id):
-    return render_template('page_is_yet_to_exist.html')
-    # TODO: Build route to action page
+def action_info(act_id):
+    action = Action.query.get(act_id)
+    return render_template('action_info.html', action=action)
 
 
-@main.route('/action/create')
+@main.route('/character/<char_id>/actioncreate', methods=['GET', 'POST'])
 @login_required()
-def action_create():
-    return render_template('page_is_yet_to_exist.html')
-    # TODO: Build route to action create
+def action_create(char_id):
+    form = ActionCreateForm()
+    if form.validate_on_submit():
+        action = Action.create_action(char_id=char_id,
+                                      name=form.name.data,
+                                      act_type=form.act_type.data,
+                                      lore=form.lore.data,
+                                      mechanics=form.mechanics.data)
+        flash('Action Created')
+        return redirect(url_for('main.character_info', char_id=action.char_id))
+    return render_template('action_create.html', form=form)
 
 
-@main.route('/action/<act_id>/edit')
+@main.route('/action/<act_id>/edit', methods=['GET', 'POST'])
 @login_required()
-def action_edit():
-    return render_template('page_is_yet_to_exist.html')
-    # TODO: Build route to action create
+def action_edit(act_id):
+    action = Action.query.get(act_id)
+    form = ActionCreateForm(obj=action)
+    if form.validate_on_submit():
+        action.name = form.name.data
+        action.lore = form.lore.data
+        action.mechanics = form.mechanics.data
+        db.session.add(action)
+        db.session.commit()
+        flash('Character edited')
+        return redirect(url_for('main.action_info', act_id=act_id))
+    return render_template('action_create.html', form=form)
+
+
+@main.route('/action/<act_id>/delete', methods=['GET', 'POST'])
+@login_required()
+def action_delete(act_id):
+    action = Action.query.get(act_id)
+    if request.method == 'POST':
+        db.session.delete(action)
+        db.session.commit()
+        flash('Action deleted')
+        return redirect(url_for('main.character_info', char_id=action.char_id))
+    return render_template('action_delete.html')

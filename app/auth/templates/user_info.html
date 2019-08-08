@@ -3,7 +3,7 @@
 {% block content %}
 
     <br>
-    <div class="container">
+    <div class="container-fluid">
         <h3>{{ user.user_name }}</h3>
         <hr>
         <ul>
@@ -13,7 +13,7 @@
     </div>
     <br><br>
 
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
             <div class="col">
                 <h4>Your Characters</h4>
@@ -26,7 +26,7 @@
         {% for character in characters: %}
             <div class="row">
                 <div class="col">
-                    <a href="{{ url_for('main.character_page', char_id=character.id) }}" style="font-size: 22px">{{ character.name }}</a>
+                    <a href="{{ url_for('main.character_info', char_id=character.id) }}" style="font-size: 22px">{{ character.name }}</a>
                 </div>
                 <div class="col">
                     <div class="btn-group">
@@ -34,12 +34,12 @@
                         <a class="btn btn-danger" href="{{ url_for('main.character_delete', char_id=character.id) }}" role="Button">Delete</a>
                     </div>
                 </div>
-            </div>
+            </div><br>
         {% endfor %}
     </div>
     <br><br>
 
-    <div class="container">
+    <div class="container-fluid">
         {% if current_user.role == 'SUPER' %}
             <a class="btn btn-primary" href="{{ url_for('authentication.user_change_role', user_id=user.id) }}" role="button">Change Role</a>
         {% endif %}

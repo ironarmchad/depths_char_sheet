@@ -1,55 +1,37 @@
 from flask_wtf import FlaskForm
-from wtforms import SubmitField, StringField, IntegerField
+from wtforms import  StringField, IntegerField, TextAreaField, SelectField, ValidationError
 from wtforms.validators import DataRequired
-from wtforms.widgets import TextArea
+
+
+def check_empty(form, field):
+    if field.data == '':
+        raise ValidationError('Field must be filled')
 
 
 class GameCreateForm(FlaskForm):
-    game_name = StringField('Name', validators=[DataRequired()])
-    game_lore = StringField('Lore', render_kw={'rows': 70, 'cols': 20})
-    submit = SubmitField()
-
-
-class GameEditForm(FlaskForm):
-    game_name = StringField('Name', validators=[DataRequired()])
-    game_lore = StringField('Lore', render_kw={'rows': 70, 'cols': 20})
-    submit = SubmitField()
+    name = StringField('Name', validators=[DataRequired()])
+    lore = TextAreaField('Lore', render_kw={'rows': 10, 'cols': 20})
 
 
 class CreateCharacterForm(FlaskForm):
-    char_name = StringField('Name', validators=[DataRequired()])
-    char_lore = StringField('Lore', render_kw={'rows': 70, 'cols': 20})
-    char_strength = IntegerField('Strength', validators=[DataRequired()])
-    char_reflex = IntegerField('Reflex', validators=[DataRequired()])
-    char_vitality = IntegerField('Vitality', validators=[DataRequired()])
-    char_speed = IntegerField('Speed', validators=[DataRequired()])
-    char_awareness = IntegerField('Awareness', validators=[DataRequired()])
-    char_willpower = IntegerField('Willpower', validators=[DataRequired()])
-    char_imagination = IntegerField('Imagination', validators=[DataRequired()])
-    char_attunement = IntegerField('Attunement', validators=[DataRequired()])
-    char_faith = IntegerField('Faith', validators=[DataRequired()])
-    char_charisma = IntegerField('Charisma', validators=[DataRequired()])
-    char_luck = IntegerField('Luck', validators=[DataRequired()])
-    submit = SubmitField()
+    name = StringField('Name', validators=[DataRequired()])
+    lore = TextAreaField('Lore', render_kw={'rows': 10, 'cols': 20})
+    strength = IntegerField('Strength', validators=[DataRequired()])
+    reflex = IntegerField('Reflex', validators=[DataRequired()])
+    vitality = IntegerField('Vitality', validators=[DataRequired()])
+    speed = IntegerField('Speed', validators=[DataRequired()])
+    awareness = IntegerField('Awareness', validators=[DataRequired()])
+    willpower = IntegerField('Willpower', validators=[DataRequired()])
+    imagination = IntegerField('Imagination', validators=[DataRequired()])
+    attunement = IntegerField('Attunement', validators=[DataRequired()])
+    faith = IntegerField('Faith', validators=[DataRequired()])
+    charisma = IntegerField('Charisma', validators=[DataRequired()])
+    luck = IntegerField('Luck', validators=[DataRequired()])
 
 
-class EditCharacterForm(FlaskForm):
-    char_name = StringField('Name', validators=[DataRequired()])
-    char_lore = StringField('Lore')
-    char_strength = IntegerField('Strength', validators=[DataRequired()])
-    char_reflex = IntegerField('Reflex', validators=[DataRequired()])
-    char_vitality = IntegerField('Vitality', validators=[DataRequired()])
-    char_speed = IntegerField('Speed', validators=[DataRequired()])
-    char_awareness = IntegerField('Awareness', validators=[DataRequired()])
-    char_willpower = IntegerField('Willpower', validators=[DataRequired()])
-    char_imagination = IntegerField('Imagination', validators=[DataRequired()])
-    char_attunement = IntegerField('Attunement', validators=[DataRequired()])
-    char_faith = IntegerField('Faith', validators=[DataRequired()])
-    char_charisma = IntegerField('Charisma', validators=[DataRequired()])
-    char_luck = IntegerField('Luck', validators=[DataRequired()])
-    submit = SubmitField()
+class ActionCreateForm(FlaskForm):
+    name = StringField('Name', validators=[DataRequired()])
+    act_type = SelectField('Type', choices=[('', '---'), ('natural', 'NATURAL'), ('super', 'SUPERNATURAL'), ('item', 'ITEM')], validators=[check_empty])
+    lore = TextAreaField('Lore', render_kw={'rows': 10, 'cols': 20})
+    mechanics = TextAreaField('Mechanics', render_kw={'rows': 10, 'cols': 20})
 
-
-class DeleteCharacterForm(FlaskForm):
-    submit = SubmitField()
-    # TODO: Delete character form

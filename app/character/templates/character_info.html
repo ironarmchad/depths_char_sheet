@@ -2,13 +2,25 @@
 
 {% block content %}
 
-    <div class="container">
-        <h3>{{ character.name }}</h3>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <h3>{{ character.name }}</h3>
+            </div>
+            <div class="col">
+                <div class="float-right">
+                <div class="btn-group">
+                        <a class="btn btn-secondary" href="{{ url_for('main.character_edit', char_id=character.id) }}" role="Button">Edit</a>
+                        <a class="btn btn-danger" href="{{ url_for('main.character_delete', char_id=character.id) }}" role="Button">Delete</a>
+                </div>
+                </div>
+            </div>
+        </div>
         <h6>Character belongs to {{ owner.user_name }}</h6>
         <p>{{ character.lore }}</p>
     </div>
 
-    <div class="container">
+    <div class="container-fluid">
         <h4>Character Stats</h4>
         <div class="row">
             <div class="col"><span>Strength: {{ character.strength }}</span></div>
@@ -30,6 +42,90 @@
             <div class="col"><span>Awareness: {{ character.awareness }}</span></div>
             <div class="col"><span>Charisma: {{ character.charisma }}</span></div>
         </div>
+    </div><hr>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <h4>Natural Abilities</h4>
+            </div>
+            <div class="col">
+                <div class="float-right">
+                    <a class="btn btn-primary" href="{{ url_for('main.action_create', char_id=character.id) }}" role="Button">Add</a>
+                </div>
+            </div>
+        </div><br>
+        {% for natural in naturals: %}
+            <div class="row">
+                <div class="col">
+                    <a href="{{ url_for('main.action_info', act_id=natural.id) }}">{{ natural.name }}</a>
+                </div>
+                <div class="col">
+                    <div class="float-right">
+                        <div class="btn-group btn-group-sm" role="group">
+                            <a class="btn btn-secondary" href="{{ url_for('main.action_edit', act_id=natural.id) }}" role="Button">Edit</a>
+                            <a class="btn btn-danger" href="{{ url_for('main.action_delete', act_id=natural.id) }}" role="Button">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div><hr>
+
+    <div class="container-fluid">
+    <div class="row">
+        <div class="col">
+            <h4>Supernatural Abilities</h4>
+        </div>
+        <div class="col">
+            <div class="float-right">
+                <a class="btn btn-primary" href="{{ url_for('main.action_create', char_id=character.id) }}" role="Button">Add</a>
+            </div>
+        </div>
+    </div><br>
+    {% for super in supers: %}
+    <div class="row">
+        <div class="col">
+            <a href="{{ url_for('main.action_info', act_id=super.id) }}">{{ super.name }}</a>
+        </div>
+        <div class="col">
+            <div class="float-right">
+                <div class="btn-group btn-group-sm" role="group">
+                    <a class="btn btn-secondary" href="{{ url_for('main.action_edit', act_id=super.id) }}" role="Button">Edit</a>
+                    <a class="btn btn-danger" href="{{ url_for('main.action_delete', act_id=super.id) }}" role="Button">Delete</a>
+                </div>
+            </div>
+        </div>
     </div>
+    {% endfor %}
+    </div><hr>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col">
+            <h4>Supernatural Abilities</h4>
+        </div>
+        <div class="col">
+            <div class="float-right">
+                <a class="btn btn-primary" href="{{ url_for('main.action_create', char_id=character.id) }}" role="Button">Add</a>
+            </div>
+        </div>
+    </div><br>
+    {% for item in items: %}
+    <div class="row">
+        <div class="col">
+            <a href="{{ url_for('main.action_info', act_id=item.id) }}">{{ item.name }}</a>
+        </div>
+        <div class="col">
+            <div class="float-right">
+                <div class="btn-group btn-group-sm" role="group">
+                    <a class="btn btn-secondary" href="{{ url_for('main.action_edit', act_id=item.id) }}" role="Button">Edit</a>
+                    <a class="btn btn-danger" href="{{ url_for('main.action_delete', act_id=item.id) }}" role="Button">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
 
 {% endblock content %}

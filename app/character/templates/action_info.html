@@ -1,0 +1,26 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+    <div class="container-fluid">
+        <h4>{{ action.name }}</h4>
+        <hr>
+        <div class="row">
+            <div class="col">
+                <h6>Lore</h6>
+                <p>{{ action.lore | safe }}</p>
+            </div>
+            <div class="col">
+                <h6>Mechanics</h6>
+                <p>{{ action.mechanics | safe }}</p>
+            </div>
+        </div>
+    </div><br>
+
+    <div class="container-fluid">
+        <div class="float-right">
+            <a class="btn btn-primary" href="{{ url_for('main.character_info', char_id=action.char_id) }}">Return to Character</a>
+        </div>
+    </div>
+
+{% endblock content %}

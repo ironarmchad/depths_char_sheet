@@ -73,9 +73,25 @@ class Character(db.Model):
         return character
 
 
-class Action():
+class Action(db.Model):
     __tablename__ = 'actions'
     id = db.Column(db.Integer, primary_key=True)
+    char_id = db.Column(db.Integer, db.ForeignKey('characters.id'), nullable=False)
+    name = db.Column(db.String(30), index=True, nullable=False)
+    act_type = db.Column(db.String(10), nullable=False)
     lore = db.Column(db.String)
-    script = db.Column(db.String, nullable=False)
-    # TODO: Write the Action db...
+    mechanics = db.Column(db.String)
+
+    @classmethod
+    def create_action(cls, char_id, name, act_type, lore, mechanics):
+        action = cls(char_id=char_id,
+                     name=name,
+                     act_type=act_type,
+                     lore=lore,
+                     mechanics=mechanics)
+        db.session.add(action)
+        db.session.commit()
+        return action
+
+    def __repr__(self):
+        return '{} belongs to character {}'.format(self.name, self.char_id)

@@ -1,0 +1,16 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<div class="container-fluid">
+    <form method="post">
+        {{ form.hidden_tag() }}
+        {{ wtf.form_field(form.name) }}
+        {{ wtf.form_field(form.act_type) }}
+        {{ wtf.form_field(form.lore) }}
+        {{ wtf.form_field(form.mechanics) }}
+        <input class="btn btn-primary" type="submit" value="Submit">
+    </form>
+</div>
+
+{% endblock content %}
