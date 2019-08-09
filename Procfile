@@ -1,1 +1,1 @@
-web: gunicorn run:char_app --debug
+web: gunicorn test:app
