@@ -8,8 +8,6 @@ class Game(db.Model):
     st_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     active = db.Column(db.Boolean, nullable=False)
     lore = db.Column(db.String)
-    npc_char_list = db.Column(db.String)
-    player_char_list = db.Column(db.String)
 
     @classmethod
     def create_game(cls, game_name, st_id, game_lore, active=True):
@@ -24,6 +22,8 @@ class Character(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     owner = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     name = db.Column(db.String(20), nullable=False, index=True)
+    char_type = db.Column(db.String(10), nullable=False)
+    game_id = db.Column(db.Integer, db.ForeignKey('Game.id'))
     lore = db.Column(db.String)
     strength = db.Column(db.Integer, nullable=False)
     reflex = db.Column(db.Integer, nullable=False)

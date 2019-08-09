@@ -7,6 +7,14 @@
             <div class="form-group" action="{{ url_for('main.character_create') }}">
                 {{ form.hidden_tag() }}
                 {{ wtf.form_field(form.name) }}
+                <div class="row">
+                    <div class="col">
+                        {{ wtf.form_field(form.char_type) }}
+                    </div>
+                    <div class="col">
+                        {{ wtf.form_field(form.game_id }}
+                    </div>
+                </div>
                 {{ wtf.form_field(form.lore) }}
                 <div class="row">
                     <div class="col-sm-4">{{ wtf.form_field(form.strength) }}</div>

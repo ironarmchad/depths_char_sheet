@@ -66,7 +66,7 @@ def game_delete(game_id):
     return render_template('game_delete.html', game=game, game_id=game_id)
 
 
-@main.route('/character/<char_id>')
+@main.route('/character/<char_id>', methods=['GET', 'POST'])
 @login_required()
 def character_info(char_id):
     character = Character.query.get(int(char_id))
@@ -75,12 +75,14 @@ def character_info(char_id):
     naturals = [action for action in actions if action.act_type == 'natural']
     supers = [action for action in actions if action.act_type == 'super']
     items = [action for action in actions if action.act_type == 'item']
+    games = Game.query.filter_by(active=True).order_by(Game.name)
     return render_template('character_info.html',
                            character=character,
                            owner=owner,
                            naturals=naturals,
                            supers=supers,
-                           items=items)
+                           items=items,
+                           games=games)
 
 
 @main.route('/character/create', methods=['GET', 'POST'])

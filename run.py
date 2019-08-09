@@ -4,6 +4,7 @@ import sys
 
 
 if __name__ == '__main__':
+    print('check')
     char_app = create_app('dev')
     with char_app.app_context():
         db.create_all()
