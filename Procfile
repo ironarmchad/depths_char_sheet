@@ -1,1 +1,1 @@
-web: gunicorn run:char_app --error-logfile
+web: gunicorn run:char_app --error-logfile -
