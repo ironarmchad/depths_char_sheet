@@ -1,1 +1,1 @@
-web: gunicorn -b :$PORT run:dev_run
+web: gunicorn -b :$PORT run:prod_run
