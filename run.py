@@ -1,7 +1,8 @@
 from app import create_app, db
 from app.auth.models import User
 
-def dev_run():
+
+def dev_run(environ, start_response):
     char_app = create_app('dev')
     with char_app.app_context():
         db.create_all()
