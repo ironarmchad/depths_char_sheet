@@ -2,9 +2,15 @@
 
 {% block content %}
 
-    <div class="container">
-        {{ form.hidden_tag() }}
-        {{ wtf.quick_form(form) }}
+    <div class="container-fluid">
+        <form method="post">
+            <div class="form-group">
+                {{ form.hidden_tag() }}
+                {{ wtf.form_field(form.name) }}
+                {{ wtf.form_field(form.lore) }}
+                <input class="btn btn-primary" type="submit" value="Submit">
+            </div>
+        </form>
     </div>
 
 {% endblock content %}

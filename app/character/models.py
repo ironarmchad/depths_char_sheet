@@ -23,7 +23,7 @@ class Character(db.Model):
     owner = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     name = db.Column(db.String(20), nullable=False, index=True)
     char_type = db.Column(db.String(10), nullable=False)
-    game_id = db.Column(db.Integer, db.ForeignKey('Game.id'))
+    game_id = db.Column(db.Integer, db.ForeignKey('games.id'))
     lore = db.Column(db.String)
     strength = db.Column(db.Integer, nullable=False)
     reflex = db.Column(db.Integer, nullable=False)
@@ -40,34 +40,38 @@ class Character(db.Model):
 
     @classmethod
     def create_character(cls,
-                         char_owner,
-                         char_name,
-                         char_lore,
-                         char_strength,
-                         char_reflex,
-                         char_vitality,
-                         char_speed,
-                         char_awareness,
-                         char_willpower,
-                         char_imagination,
-                         char_attunement,
-                         char_faith,
-                         char_luck,
-                         char_charisma):
-        character = cls(owner=char_owner,
-                        name=char_name,
-                        lore=char_lore,
-                        strength=char_strength,
-                        reflex=char_reflex,
-                        vitality=char_vitality,
-                        speed=char_speed,
-                        awareness=char_awareness,
-                        willpower=char_willpower,
-                        imagination=char_imagination,
-                        attunement=char_attunement,
-                        faith=char_faith,
-                        luck=char_luck,
-                        charisma=char_charisma)
+                         owner,
+                         name,
+                         char_type,
+                         game_id,
+                         lore,
+                         strength,
+                         reflex,
+                         vitality,
+                         speed,
+                         awareness,
+                         willpower,
+                         imagination,
+                         attunement,
+                         faith,
+                         luck,
+                         charisma):
+        character = cls(owner=owner,
+                        name=name,
+                        char_type=char_type,
+                        game_id=game_id,
+                        lore=lore,
+                        strength=strength,
+                        reflex=reflex,
+                        vitality=vitality,
+                        speed=speed,
+                        awareness=awareness,
+                        willpower=willpower,
+                        imagination=imagination,
+                        attunement=attunement,
+                        faith=faith,
+                        luck=luck,
+                        charisma=charisma)
         db.session.add(character)
         db.session.commit()
         return character

@@ -26,8 +26,8 @@ def game_list():
 def game_create():
     form = GameCreateForm()
     if form.validate_on_submit():
-        game = Game.create_game(game_name=form.game_name.data,
-                                st_id=current_user.id, game_lore=form.game_lore.data)
+        game = Game.create_game(game_name=form.name.data,
+                                st_id=current_user.id, game_lore=form.lore.data)
         return redirect(url_for('main.game_info', game_id=game.id))
     return render_template('game_create.html', form=form)
 
@@ -46,8 +46,8 @@ def game_edit(game_id):
     game = Game.query.get(game_id)
     form = GameCreateForm(obj=game)
     if form.validate_on_submit():
-        game.name = form.game_name.data
-        game.lore = form.game_lore.data
+        game.name = form.name.data
+        game.lore = form.lore.data
         db.session.add(game)
         db.session.commit()
         return redirect(url_for('main.game_info', game_id=game_id))
@@ -89,22 +89,27 @@ def character_info(char_id):
 @login_required()
 def character_create():
     form = CreateCharacterForm()
+    form.game_id.choices = [(game.id, game.name) for game in Game.query.filter_by(active=True).order_by(Game.name)]
+    form.game_id.data = Game.query.filter_by(name='No Game').first().id
+    print(form.game_id.default)
     if form.validate_on_submit():
         character = Character.create_character(
-            char_name=form.char_name.data,
-            char_owner=current_user.id,
-            char_lore=form.char_lore.data,
-            char_strength=form.char_strength.data,
-            char_reflex=form.char_reflex.data,
-            char_vitality=form.char_vitality.data,
-            char_speed=form.char_speed.data,
-            char_awareness=form.char_awareness.data,
-            char_willpower=form.char_willpower.data,
-            char_imagination=form.char_imagination.data,
-            char_attunement=form.char_attunement.data,
-            char_faith=form.char_faith.data,
-            char_charisma=form.char_charisma.data,
-            char_luck=form.char_luck.data,
+            name=form.name.data,
+            char_type=form.char_type.data,
+            game_id=form.game_id.data,
+            owner=current_user.id,
+            lore=form.lore.data,
+            strength=form.strength.data,
+            reflex=form.reflex.data,
+            vitality=form.vitality.data,
+            speed=form.speed.data,
+            awareness=form.awareness.data,
+            willpower=form.willpower.data,
+            imagination=form.imagination.data,
+            attunement=form.attunement.data,
+            faith=form.faith.data,
+            charisma=form.charisma.data,
+            luck=form.luck.data,
         )
         flash('Character created')
         return redirect(url_for('main.character_info', char_id=character.id))
@@ -117,25 +122,28 @@ def character_create():
 def character_edit(char_id):
     character = Character.query.get(char_id)
     form = CreateCharacterForm(obj=character)
+    form.game_id.choices = [(game.id, game.name) for game in Game.query.filter_by(active=True).order_by(Game.name)]
+
     if form.validate_on_submit():
-        character.name = form.char_name.data
-        character.owner = current_user.id
-        character.lore = form.char_lore.data
-        character.strength = form.char_strength.data
-        character.reflex = form.char_reflex.data
-        character.speed = form.char_speed.data
-        character.awareness = form.char_awareness.data
-        character.willpower = form.char_willpower.data
-        character.imagination = form.char_imagination.data
-        character.attunement = form.char_attunement.data
-        character.faith = form.char_faith.data
-        character.charisma = form.char_charisma.data
-        character.luck = form.char_luck.data
+        character.name = form.name.data
+        character.char_type = form.char_type.data
+        character.game_id = form.game_id.data
+        character.lore = form.lore.data
+        character.strength = form.strength.data
+        character.reflex = form.reflex.data
+        character.speed = form.speed.data
+        character.awareness = form.awareness.data
+        character.willpower = form.willpower.data
+        character.imagination = form.imagination.data
+        character.attunement = form.attunement.data
+        character.faith = form.faith.data
+        character.charisma = form.charisma.data
+        character.luck = form.luck.data
         db.session.add(character)
         db.session.commit()
         flash('{} is edited.'.format(character.name))
         return redirect(url_for('main.character_info', char_id=char_id))
-    return render_template('character_edit.html', form=form)
+    return render_template('character_create.html', form=form)
 
 
 @main.route('/character/<char_id>/delete', methods=['GET', 'POST'])

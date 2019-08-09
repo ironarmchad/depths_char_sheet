@@ -15,11 +15,9 @@ class GameCreateForm(FlaskForm):
 
 
 class CreateCharacterForm(FlaskForm):
-    games = Game.query.filter_by(active=True).ordered_by(Game.name)
-    gametuples = [(None, '---')] + [(game.id, game.name) for game in games]
     name = StringField('Name', validators=[DataRequired()])
-    act_type = SelectField('Type', choices=[('', '---'), ('player', 'Player'), ('npc', 'NPC')], validators=[check_empty])
-    game_type = SelectField('Type', choices=gametuples)
+    char_type = SelectField('Type', choices=[('', '---'), ('player', 'Player'), ('npc', 'NPC')], validators=[check_empty])
+    game_id = SelectField('Type', coerce=int)
     lore = TextAreaField('Lore', render_kw={'rows': 10, 'cols': 20})
     strength = IntegerField('Strength', validators=[DataRequired()])
     reflex = IntegerField('Reflex', validators=[DataRequired()])
