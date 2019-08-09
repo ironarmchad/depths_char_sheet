@@ -1,1 +1,1 @@
-web: gunicorn run:prod_run
+web: gunicorn run:char_app
