@@ -36,8 +36,10 @@ def game_create():
 @login_required()
 def game_info(game_id):
     game = Game.query.get(int(game_id))
-    st_name = User.query.get(game.st_id).user_name
-    return render_template('game_info.html', game=game, st_name=st_name)
+    st = User.query.get(game.st_id)
+    npc_list = Character.query.filter_by(char_type='npc').order_by(Character.name)
+    player_list = Character.query.filter_by(char_type='player').order_by(Character.name)
+    return render_template('game_info.html', game=game, st=st, npc_list=npc_list, player_list=player_list)
 
 
 @main.route('/game/<game_id>/edit', methods=['GET', 'POST'])

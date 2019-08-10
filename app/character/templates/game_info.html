@@ -5,9 +5,30 @@
     <div class="container-fluid">
         <h4>{{ game.name }}</h4>
         <br>
-        <h6>Story Teller: {{ st_name }}</h6>
+        <h5>Story Teller: {{ st.name}}</h5>
         <hr>
         <p>{{ game.lore }}</p>
-
+    </div><hr>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <h6>Player Characters</h6>
+                <ul>
+                    {% for character in player_list: %}
+                        <li><a href="{{ url_for('main.character_info', char_id=character.id) }}">{{ character.name }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="col">
+                {% if current_user.id == st.id %}
+                <h6>NPC Characters</h6>
+                <ul>
+                    {% for character in player_list: %}
+                    <li><a href="{{ url_for('main.character_info', char_id=character.id) }}">{{ character.name }}</a></li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </div>
+        </div>
     </div>
 {% endblock content %}
