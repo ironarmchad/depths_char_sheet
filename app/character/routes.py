@@ -37,8 +37,8 @@ def game_create():
 def game_info(game_id):
     game = Game.query.get(int(game_id))
     st = User.query.get(game.st_id)
-    npc_list = Character.query.filter_by(char_type='npc').order_by(Character.name)
-    player_list = Character.query.filter_by(char_type='player').order_by(Character.name)
+    npc_list = Character.query.filter_by(char_type='npc').filter_by(game_id=game.id).order_by(Character.name)
+    player_list = Character.query.filter_by(char_type='player').filter_by(game_id=game.id).order_by(Character.name)
     return render_template('game_info.html', game=game, st=st, npc_list=npc_list, player_list=player_list)
 
 
