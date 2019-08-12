@@ -1,0 +1,13 @@
+{% extends 'game_info.html' %}
+
+{% block gamecontent %}
+    <div class="col">
+        <h5>Story Teller: {{ st.name }}</h5>
+        <p><strong>Lore:</strong> {{ game.lore }}</p>
+        <ul>
+            {% for character in characters: %}
+                <li>{{ character.name }} </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock gamecontent %}

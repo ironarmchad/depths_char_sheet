@@ -1,7 +1,7 @@
 from app import db
 from app.character import main
-from app.character.models import Character, Game, Action
-from app.character.forms import GameCreateForm, CreateCharacterForm, ActionCreateForm
+from app.character.models import Character, Action
+from app.character.forms import CreateCharacterForm, ActionCreateForm
 from app.auth.models import User
 from app.auth.routes import login_required
 from flask import render_template, redirect, url_for, flash, request
@@ -11,61 +11,6 @@ from flask_login import current_user
 @main.route('/')
 def home_page():
     return render_template('home.html')
-
-
-@main.route('/game')
-@login_required()
-def game_list():
-    active_games = Game.query.filter_by(active=True)
-    inactive_games = Game.query.filter_by(active=False)
-    return render_template('game_list.html', active_games=active_games, inactive_games=inactive_games)
-
-
-@main.route('/game/create', methods=['GET', 'POST'])
-@login_required()
-def game_create():
-    form = GameCreateForm()
-    if form.validate_on_submit():
-        game = Game.create_game(game_name=form.name.data,
-                                st_id=current_user.id, game_lore=form.lore.data)
-        return redirect(url_for('main.game_info', game_id=game.id))
-    return render_template('game_create.html', form=form)
-
-
-@main.route('/game/<game_id>')
-@login_required()
-def game_info(game_id):
-    game = Game.query.get(int(game_id))
-    st = User.query.get(game.st_id)
-    npc_list = Character.query.filter_by(char_type='npc').filter_by(game_id=game.id).order_by(Character.name)
-    player_list = Character.query.filter_by(char_type='player').filter_by(game_id=game.id).order_by(Character.name)
-    return render_template('game_info.html', game=game, st=st, npc_list=npc_list, player_list=player_list)
-
-
-@main.route('/game/<game_id>/edit', methods=['GET', 'POST'])
-@login_required()
-def game_edit(game_id):
-    game = Game.query.get(game_id)
-    form = GameCreateForm(obj=game)
-    if form.validate_on_submit():
-        game.name = form.name.data
-        game.lore = form.lore.data
-        db.session.add(game)
-        db.session.commit()
-        return redirect(url_for('main.game_info', game_id=game_id))
-    return render_template('game_edit.html', form=form)
-
-
-@main.route('/game/<game_id>/edit', methods=['GET', 'POST'])
-@login_required
-def game_delete(game_id):
-    game = Game.query.get(game_id)
-    if request.method == 'POST':
-        db.session.delete(game)
-        db.session.commit()
-        flash('Game has been deleted.')
-        return redirect('main.game_list')
-    return render_template('game_delete.html', game=game, game_id=game_id)
 
 
 @main.route('/character/<char_id>', methods=['GET', 'POST'])

@@ -1,0 +1,13 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <div class="container-fluid">
+        <h3>{{ game.name }}</h3>
+        <div class="row">
+            {% block gamecontent %} {% endblock gamecontent %}
+            <div class="col-sm">
+                <h5>This will be a Chat-box one day</h5>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

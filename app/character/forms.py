@@ -1,17 +1,11 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, IntegerField, TextAreaField, SelectField, ValidationError
 from wtforms.validators import DataRequired
-from app.character.models import Game
 
 
 def check_empty(form, field):
     if field.data == '':
         raise ValidationError('Field must be filled')
-
-
-class GameCreateForm(FlaskForm):
-    name = StringField('Name', validators=[DataRequired()])
-    lore = TextAreaField('Lore', render_kw={'rows': 10, 'cols': 20})
 
 
 class CreateCharacterForm(FlaskForm):

@@ -8,14 +8,14 @@
                 <h4>Active Games</h4>
                 <ul>
                     {% for game in active_games: %}
-                        <li><a href="{{ url_for('main.game_info', game_id=game.id) }}">{{ game.name }}</a></li>
+                        <li><a href="{{ url_for('game.game_info', game_id=game.id) }}">{{ game.name }}</a></li>
                     {% endfor %}
                 </ul>
             </div>
             <div class="col">
                 <h4>Inactive Games</h4>
                 {% for game in inactive_games: %}
-                    <a href="{{ url_for('main.game_info', game_id=game.id) }}">{{ game.name }}</a>
+                    <a href="{{ url_for('game.game_info', game_id=game.id) }}">{{ game.name }}</a>
                 {% endfor %}
             </div>
         </div>

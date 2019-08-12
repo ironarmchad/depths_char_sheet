@@ -1,6 +1,6 @@
 from app import create_app, db
 from app.auth.models import User
-from app.character.models import Game
+from app.game.models import Game
 import sys
 
 

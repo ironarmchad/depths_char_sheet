@@ -35,4 +35,7 @@ def create_app(config_type):
     from app.auth import authentication
     app.register_blueprint(authentication)
 
+    from app.game import game_pages
+    app.register_blueprint(game_pages)
+
     return app
