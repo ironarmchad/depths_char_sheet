@@ -1,0 +1,28 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<div class="container-fluid">
+    <h4>{{ character.name }}</h4>
+    <form method="post">
+        <div class="form-group">
+            {{ form.hidden_tag() }}
+            <div class="row">
+                <div class="col-sm-4">{{ wtf.form_field(form.strength) }}</div>
+                <div class="col-sm-4">{{ wtf.form_field(form.reflex) }}</div>
+                <div class="col-sm-4">{{ wtf.form_field(form.vitality) }}</div>
+                <div class="col-sm-4">{{ wtf.form_field(form.speed) }}</div>
+                <div class="col-sm-4">{{ wtf.form_field(form.awareness) }}</div>
+                <div class="col-sm-4">{{ wtf.form_field(form.willpower) }}</div>
+                <div class="col-sm-4">{{ wtf.form_field(form.attunement) }}</div>
+                <div class="col-sm-4">{{ wtf.form_field(form.imagination) }}</div>
+                <div class="col-sm-4">{{ wtf.form_field(form.faith) }}</div>
+                <div class="col-sm-4">{{ wtf.form_field(form.luck) }}</div>
+                <div class="col-sm-4">{{ wtf.form_field(form.charisma) }}</div>
+            </div>
+            <input class="btn btn-primary" type="submit" value="Submit">
+        </div>
+    </form>
+</div>
+
+{% endblock content %}

@@ -8,22 +8,40 @@ def check_empty(form, field):
         raise ValidationError('Field must be filled')
 
 
-class CreateCharacterForm(FlaskForm):
+def stat_range(form, field):
+    if field.data > 21:
+        raise ValidationError('Value must be less than 21.')
+    elif field.data < 1:
+        raise ValidationError('Value must be greater than 0')
+
+
+class CharacterCreateCoreForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
     char_type = SelectField('Type', choices=[('', '---'), ('player', 'Player'), ('npc', 'NPC')], validators=[check_empty])
     game_id = SelectField('Type', coerce=int)
     lore = TextAreaField('Lore', render_kw={'rows': 10, 'cols': 20})
-    strength = IntegerField('Strength', validators=[DataRequired()])
-    reflex = IntegerField('Reflex', validators=[DataRequired()])
-    vitality = IntegerField('Vitality', validators=[DataRequired()])
-    speed = IntegerField('Speed', validators=[DataRequired()])
-    awareness = IntegerField('Awareness', validators=[DataRequired()])
-    willpower = IntegerField('Willpower', validators=[DataRequired()])
-    imagination = IntegerField('Imagination', validators=[DataRequired()])
-    attunement = IntegerField('Attunement', validators=[DataRequired()])
-    faith = IntegerField('Faith', validators=[DataRequired()])
-    charisma = IntegerField('Charisma', validators=[DataRequired()])
-    luck = IntegerField('Luck', validators=[DataRequired()])
+
+
+class CharacterCreateStatsForm(FlaskForm):
+    strength = IntegerField('Strength', validators=[DataRequired(), stat_range])
+    reflex = IntegerField('Reflex', validators=[DataRequired(), stat_range])
+    vitality = IntegerField('Vitality', validators=[DataRequired(), stat_range])
+    speed = IntegerField('Speed', validators=[DataRequired(), stat_range])
+    awareness = IntegerField('Awareness', validators=[DataRequired(), stat_range])
+    willpower = IntegerField('Willpower', validators=[DataRequired(), stat_range])
+    imagination = IntegerField('Imagination', validators=[DataRequired(), stat_range])
+    attunement = IntegerField('Attunement', validators=[DataRequired(), stat_range])
+    faith = IntegerField('Faith', validators=[DataRequired(), stat_range])
+    charisma = IntegerField('Charisma', validators=[DataRequired(), stat_range])
+    luck = IntegerField('Luck', validators=[DataRequired(), stat_range])
+
+
+class CharacterCreateActionsForm(FlaskForm):
+    name = StringField('Name', validators=[DataRequired()])
+    act_type = SelectField('Type', choices=[('', '---'), ('natural', 'NATURAL'), ('super', 'SUPERNATURAL'), ('item', 'ITEM')], validators=[check_empty])
+    lore = TextAreaField('Lore', render_kw={'rows': 10, 'cols': 20})
+    mechanics = TextAreaField('Mechanics', render_kw={'rows': 10, 'cols': 20})
+
 
 
 class ActionCreateForm(FlaskForm):

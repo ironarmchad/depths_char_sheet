@@ -5,7 +5,7 @@ class Character(db.Model):
     __tablename__ = 'characters'
     id = db.Column(db.Integer, primary_key=True)
     owner = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    name = db.Column(db.String(20), nullable=False, index=True)
+    name = db.Column(db.String(50), nullable=False, index=True)
     char_type = db.Column(db.String(10), nullable=False)
     game_id = db.Column(db.Integer, db.ForeignKey('games.id'))
     lore = db.Column(db.String)
@@ -28,34 +28,23 @@ class Character(db.Model):
                          name,
                          char_type,
                          game_id,
-                         lore,
-                         strength,
-                         reflex,
-                         vitality,
-                         speed,
-                         awareness,
-                         willpower,
-                         imagination,
-                         attunement,
-                         faith,
-                         luck,
-                         charisma):
+                         lore):
         character = cls(owner=owner,
                         name=name,
                         char_type=char_type,
                         game_id=game_id,
                         lore=lore,
-                        strength=strength,
-                        reflex=reflex,
-                        vitality=vitality,
-                        speed=speed,
-                        awareness=awareness,
-                        willpower=willpower,
-                        imagination=imagination,
-                        attunement=attunement,
-                        faith=faith,
-                        luck=luck,
-                        charisma=charisma)
+                        strength=1,
+                        reflex=1,
+                        vitality=1,
+                        speed=1,
+                        awareness=1,
+                        willpower=1,
+                        imagination=1,
+                        attunement=1,
+                        faith=1,
+                        luck=1,
+                        charisma=1)
         db.session.add(character)
         db.session.commit()
         return character

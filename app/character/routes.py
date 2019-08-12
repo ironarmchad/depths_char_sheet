@@ -1,7 +1,7 @@
 from app import db
 from app.character import main
 from app.character.models import Character, Action
-from app.character.forms import CreateCharacterForm, ActionCreateForm
+from app.character.forms import CharacterCreateCoreForm, CharacterCreateStatsForm, CharacterCreateActionsForm, ActionCreateForm
 from app.game.models import Game
 from app.auth.models import User
 from app.auth.routes import login_required
@@ -39,43 +39,31 @@ def character_info(char_id):
                            games=games)
 
 
-@main.route('/character/create', methods=['GET', 'POST'])
+@main.route('/character/create/core', methods=['GET', 'POST'])
 @login_required()
-def character_create():
-    form = CreateCharacterForm()
+def character_create_core():
+    form = CharacterCreateCoreForm()
     form.game_id.choices = [(game.id, game.name) for game in Game.query.filter_by(active=True).order_by(Game.name)]
     form.game_id.data = Game.query.filter_by(name='No Game').first().id
-    print(form.game_id.default)
     if form.validate_on_submit():
         character = Character.create_character(
             name=form.name.data,
             char_type=form.char_type.data,
             game_id=form.game_id.data,
             owner=current_user.id,
-            lore=form.lore.data,
-            strength=form.strength.data,
-            reflex=form.reflex.data,
-            vitality=form.vitality.data,
-            speed=form.speed.data,
-            awareness=form.awareness.data,
-            willpower=form.willpower.data,
-            imagination=form.imagination.data,
-            attunement=form.attunement.data,
-            faith=form.faith.data,
-            charisma=form.charisma.data,
-            luck=form.luck.data,
+            lore=form.lore.data
         )
         flash('Character created')
         return redirect(url_for('main.character_info', char_id=character.id))
 
-    return render_template('character_create.html', form=form)
+    return render_template('character_create_core.html', form=form)
 
 
-@main.route('/character/<char_id>/edit', methods=['GET', 'POST'])
+@main.route('/character/<char_id>/core_edit', methods=['GET', 'POST'])
 @login_required()
-def character_edit(char_id):
+def character_edit_core(char_id):
     character = Character.query.get(char_id)
-    form = CreateCharacterForm(obj=character)
+    form = CharacterCreateCoreForm(obj=character)
     form.game_id.choices = [(game.id, game.name) for game in Game.query.filter_by(active=True).order_by(Game.name)]
 
     if form.validate_on_submit():
@@ -83,6 +71,20 @@ def character_edit(char_id):
         character.char_type = form.char_type.data
         character.game_id = form.game_id.data
         character.lore = form.lore.data
+        db.session.add(character)
+        db.session.commit()
+        flash('{} core information is edited.'.format(character.name))
+        return redirect(url_for('main.character_info', char_id=char_id))
+    return render_template('character_create_core.html', form=form)
+
+
+@main.route('/character/<char_id>/stats_edit', methods=['GET', 'POST'])
+@login_required()
+def character_edit_stats(char_id):
+    character = Character.query.get(char_id)
+    form = CharacterCreateStatsForm(obj=character)
+
+    if form.validate_on_submit():
         character.strength = form.strength.data
         character.reflex = form.reflex.data
         character.speed = form.speed.data
@@ -95,9 +97,9 @@ def character_edit(char_id):
         character.luck = form.luck.data
         db.session.add(character)
         db.session.commit()
-        flash('{} is edited.'.format(character.name))
+        flash('{} stats are edited.'.format(character.name))
         return redirect(url_for('main.character_info', char_id=char_id))
-    return render_template('character_create.html', form=form)
+    return render_template('character_create_stats.html', character=character, form=form)
 
 
 @main.route('/character/<char_id>/delete', methods=['GET', 'POST'])
