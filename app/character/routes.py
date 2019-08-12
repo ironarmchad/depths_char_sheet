@@ -2,6 +2,7 @@ from app import db
 from app.character import main
 from app.character.models import Character, Action
 from app.character.forms import CreateCharacterForm, ActionCreateForm
+from app.game.models import Game
 from app.auth.models import User
 from app.auth.routes import login_required
 from flask import render_template, redirect, url_for, flash, request
@@ -10,7 +11,13 @@ from flask_login import current_user
 
 @main.route('/')
 def home_page():
-    return render_template('home.html')
+    if current_user.is_authenticated:
+        user = User.query.get(current_user.id)
+        characters = [(character, Game.query.get(character.game_id)) for character in
+                      Character.query.filter_by(owner=user.id).order_by(Character.name)]
+        return render_template('home.html', user=user, characters=characters)
+    else:
+        return render_template('home.html')
 
 
 @main.route('/character/<char_id>', methods=['GET', 'POST'])
