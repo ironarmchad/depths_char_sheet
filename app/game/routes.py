@@ -6,7 +6,7 @@ from app.game.forms import GameCreateForm
 from app.game.models import Game
 from app.auth.routes import login_required
 from app.auth.models import User
-from app.character.models import Character
+from app.character.models import Character, Action
 
 
 @game_pages.route('/game')
@@ -34,7 +34,9 @@ def game_info(game_id):
     game = Game.query.get(int(game_id))
     st = User.query.get(game.st_id)
     characters = Character.query.filter_by(game_id=game.id)
-    return render_template('game_info.html', game=game, st=st, characters=characters)
+    players = [character for character in characters if character.char_type == 'player']
+    npcs = [character for character in characters if character.char_type =='npc']
+    return render_template('game_info.html', game=game, st=st, players=players, npcs=npcs)
 
 
 @game_pages.route('/game/<game_id>/edit', methods=['GET', 'POST'])
@@ -61,3 +63,18 @@ def game_delete(game_id):
         flash('Game has been deleted.')
         return redirect('game.game_list')
     return render_template('game_delete.html', game=game, game_id=game_id)
+
+@game_pages.route('/game/character/<char_id>')
+@login_required()
+def game_character_view(char_id):
+    character = Character.query.get(char_id)
+    player = User.query.get(character.owner)
+    game = character.game_id
+    actions = Action.query.filter_by(char_id=character.id).order_by(Action.name)
+    naturals = [action for action in actions if action.act_type == 'natural']
+    supers = [action for action in actions if action.act_type == 'super']
+    items = [action for action in actions if action.act_type == 'item']
+    if current_user.id != character.owner and current_user.id != game.st_id:
+        return redirect('authentication.no_peeking')
+    return render_template('game_view_character.html',
+                           character=character, player=player, naturals=naturals, supers=supers, items=items)

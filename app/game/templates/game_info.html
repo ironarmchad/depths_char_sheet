@@ -1,20 +1,36 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-    <div class="jumbotron">
+    <div class="jumbotron p-4">
         <h3>{{ game.name }}</h3>
-        <h6>Story Teller: {{ st.name }}</h6>
+        <h6>Story Teller: {{ st.user_name }}</h6>
         <hr class="my-4">
     </div>
     <div class="container-fluid">
         <div class="row">
             <div class="col">
-                <p><strong>Lore:</strong> {{ game.lore }}</p>
+                <p><strong>Lore: </strong>{{ game.lore }}</p>
+                <h6>Player Characters</h6>
                 <ul>
-                    {% for character in characters: %}
-                    <li>{{ character.name }} </li>
+                    {% for player in players %}
+                        <li><a href="{{ url_for('game.game_character_view', char_id=player.id) }}">{{ player.name }}</a></li>
                     {% endfor %}
                 </ul>
+                {% if current_user.id == game.st_id %}
+                <div class="row">
+                    <div class="col">
+                        <h6>Non-Player Characters</h6>
+                    </div>
+                    <div class="col">
+                        <a class="btn btn-primary btn-sm" href="{{ url_for('main.character_create_core') }}">Add</a>
+                    </div>
+                </div>
+                <ul>
+                    {% for npc in npcs %}
+                        <li><a href="{{ url_for('main.character_info', char_id=npc.id) }}">{{ npc.name }}</a></li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
             </div>
             <div class="col-sm-3">
                 <h5>This will be a Chat-box one day</h5>

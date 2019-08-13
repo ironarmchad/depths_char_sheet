@@ -1,0 +1,63 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<div class="jumbotron p-4">
+    <h4>{{ character.name }}</h4>
+    <h6>{{ player.name }} character</h6>
+    <hr my-4>
+</div>
+
+<!-- Lore Section -->
+<div class="container-fluid">
+    <p><strong>Lore: </strong>{{ character. lore }}</p>
+</div><br>
+
+<!-- Stat Block -->
+<div class="container-fluid">
+    <p><strong>Stats: </strong></p>
+    <div class="row">
+        <div class="col-sm-1"><span>Strength: {{ character.strength }}</span></div>
+        <div class="col-sm-1"><span>Willpower: {{ character.willpower }}</span></div>
+    </div>
+    <div class="row">
+        <div class="col-sm-1"><span>Reflex: {{ character.reflex }}</span></div>
+        <div class="col-sm-1"><span>Attunement: {{ character.attunement }}</span></div>
+    </div>
+    <div class="row">
+        <div class="col-sm-1"><span>Vitality: {{ character.vitality }}</span></div>
+        <div class="col-sm-1"><span>Imagination: {{ character.imagination }}</span></div>
+    </div>
+    <div class="row">
+        <div class="col-sm-1"><span>Speed: {{ character.speed }}</span></div>
+        <div class="col-sm-1"><span>Luck: {{ character.luck }}</span></div>
+    </div>
+    <div class="row">
+        <div class="col-sm-1"><span>Awareness: {{ character.awareness }}</span></div>
+        <div class="col-sm-1"><span>Charisma: {{ character.charisma }}</span></div>
+    </div>
+</div><br>
+
+<!-- Action Block -->
+<div class="container-fluid">
+    <p><strong>Natural Abilities: </strong></p>
+    <ul>
+        {% for action in naturals: %}
+            <li>{{ action.name }}</li>
+        {% endfor %}
+    </ul><br>
+    <p><strong>Supernatural Abilities: </strong></p>
+    <ul>
+        {% for action in supers: %}
+        <li>{{ action.name }}</li>
+        {% endfor %}
+    </ul><br>
+    <p><strong>Items: </strong></p>
+    <ul>
+        {% for action in items: %}
+        <li>{{ action.name }}</li>
+        {% endfor %}
+    </ul>
+</div>
+
+{% endblock content %}
