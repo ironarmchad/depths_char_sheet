@@ -69,7 +69,7 @@ def game_delete(game_id):
 def game_character_view(char_id):
     character = Character.query.get(char_id)
     player = User.query.get(character.owner)
-    game = character.game_id
+    game = Game.query.get(character.game_id)
     actions = Action.query.filter_by(char_id=character.id).order_by(Action.name)
     naturals = [action for action in actions if action.act_type == 'natural']
     supers = [action for action in actions if action.act_type == 'super']

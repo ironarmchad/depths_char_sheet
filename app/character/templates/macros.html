@@ -1,0 +1,12 @@
+{% macro character_card(character, player) %}
+    <div class="card" style="width: 18em">
+        <div class="card-body">
+            <h5>{{ character.name }}</h5>
+            <h6>By: {{ player.name }}</h6>
+            <p><strong>Summary:</strong> character.summary</p>
+            <div class="btn-group">
+                <a class="btn btn-secondary">Edit</a>
+                <a class="btn btn-danger">Delete</a>
+            </div>
+        </div>
+    </div>
