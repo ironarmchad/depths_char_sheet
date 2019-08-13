@@ -1,3 +1,10 @@
 footer{ position: absolute; width: 100%; left: 0; bottom: 0; height: 40px }
 
 .ftr {padding: 25px}
+
+hr {
+    background-size: 4px;
+    border-top; 4px solid #FFF0F2;
+    border-color: #FFF0F2;
+    border: 4px;
+}

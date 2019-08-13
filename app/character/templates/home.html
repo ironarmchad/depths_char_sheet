@@ -7,6 +7,8 @@
         </p>
     </div>
     <div class="container-fluid">
+
+        <!-- Compendium Section -->
         <div class="row">
             <div class="col">
                 <h4>Compendium</h4>
@@ -18,32 +20,47 @@
                     <li><a href="">Items</a></li>
                 </ul>
             </div>
+            {% if current_user.is_authenticated: %}
+
+            <!-- Character Section -->
             <div class="col">
                 <div class="row">
                     <div class="col">
-                        <h4>Character Sheets</h4>
+                        <h4>Your Character Sheets</h4>
                     </div>
-                    <div class="float-right">
-                        <div class="col">
-                            <a class="btn btn-primary" href="{{ url_for('main.character_create_core') }}">Add</a>
-                        </div>
+                    <div class="col">
+                        <a class="btn btn-primary btn-sm" href="{{ url_for('main.character_create_core') }}">Add</a>
                     </div>
                 </div>
-                {% if current_user.is_authenticated: %}
-                    <ul>
-                        {% for character in characters: %}
-                            <li>
-                                <a href="{{ url_for('main.character_info', char_id=character[0].id) }}">{{ character[0].name }}</a>
-                                {% if character[1].name != 'No Game' %}
-                                    in <a href="{{ url_for('game.game_info', game_id=character[1].id) }}">{{ character[1].name }}</a>
-                                {% endif %}
-                            </li>
-                        {% endfor %}
-                    </ul>
-                {% else %}
-                    Please <a href="{{ url_for('authentication.do_the_login') }}">login</a> to view, create or edit character sheets.
-                {% endif %}
+                <ul>
+                    {% for character in characters: %}
+                        <li>
+                            <a href="{{ url_for('main.character_info', char_id=character[0].id) }}">{{ character[0].name }}</a>
+                            {% if character[1].name != 'No Game' %}
+                                in <a href="{{ url_for('game.game_info', game_id=character[1].id) }}">{{ character[1].name }}</a>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
             </div>
+
+            <!-- Games Section -->
+            <div class="col">
+                <div class="row">
+                    <div class="col">
+                        <h4>Your Games</h4>
+                    </div>
+                    <div class="col">
+                        <a class="btn btn-primary btn-sm" href="{{ url_for('game.game_create') }}">Add</a>
+                    </div>
+                </div>
+                <ul>
+                    {% for game in games: %}
+                        <li><a href="{{ url_for('game.game_info', game_id=game.id) }}">{{ game.name }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
         </div>
     </div>
 {% endblock content %}

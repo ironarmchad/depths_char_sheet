@@ -34,7 +34,7 @@ def game_info(game_id):
     game = Game.query.get(int(game_id))
     st = User.query.get(game.st_id)
     characters = Character.query.filter_by(game_id=game.id)
-    return render_template('game_details.html', game=game, st=st, characters=characters)
+    return render_template('game_info.html', game=game, st=st, characters=characters)
 
 
 @game_pages.route('/game/<game_id>/edit', methods=['GET', 'POST'])

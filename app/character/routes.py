@@ -15,7 +15,8 @@ def home_page():
         user = User.query.get(current_user.id)
         characters = [(character, Game.query.get(character.game_id)) for character in
                       Character.query.filter_by(owner=user.id).order_by(Character.name)]
-        return render_template('home.html', user=user, characters=characters)
+        games = Game.query.filter_by(st_id=user.id).order_by(Game.name)
+        return render_template('home.html', user=user, characters=characters, games=games)
     else:
         return render_template('home.html')
 
