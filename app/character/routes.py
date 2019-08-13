@@ -1,7 +1,7 @@
 from app import db
 from app.character import main
 from app.character.models import Character, Action
-from app.character.forms import CharacterCreateCoreForm, CharacterCreateStatsForm, CharacterCreateActionsForm, ActionCreateForm
+from app.character.forms import CharacterCreateCoreForm, CharacterCreateStatsForm, ActionCreateForm
 from app.game.models import Game
 from app.auth.models import User
 from app.auth.routes import login_required
@@ -24,6 +24,9 @@ def home_page():
 @login_required()
 def character_info(char_id):
     character = Character.query.get(int(char_id))
+    if current_user.id != character.owner and current_user.role != 'SUPER':
+        return redirect(url_for('authentication.no_peeking'))
+
     owner = User.query.get(int(character.owner))
     actions = Action.query.filter_by(char_id=character.id).order_by(Action.name)
     naturals = [action for action in actions if action.act_type == 'natural']
@@ -63,6 +66,8 @@ def character_create_core():
 @login_required()
 def character_edit_core(char_id):
     character = Character.query.get(char_id)
+    if current_user.id != character.owner and current_user.role != 'SUPER':
+        return redirect(url_for('authentication.no_peeking'))
     form = CharacterCreateCoreForm(obj=character)
     form.game_id.choices = [(game.id, game.name) for game in Game.query.filter_by(active=True).order_by(Game.name)]
 
@@ -82,6 +87,8 @@ def character_edit_core(char_id):
 @login_required()
 def character_edit_stats(char_id):
     character = Character.query.get(char_id)
+    if current_user.id != character.owner and current_user.role != 'SUPER':
+        return redirect(url_for('authentication.no_peeking'))
     form = CharacterCreateStatsForm(obj=character)
 
     if form.validate_on_submit():
@@ -105,13 +112,15 @@ def character_edit_stats(char_id):
 @main.route('/character/<char_id>/delete', methods=['GET', 'POST'])
 @login_required()
 def character_delete(char_id):
-    char = Character.query.get(int(char_id))
+    character = Character.query.get(int(char_id))
+    if current_user.id != character.owner and current_user.role != 'SUPER':
+        return redirect(url_for('authentication.no_peeking'))
     if request.method == 'POST':
-        db.session.delete(char)
+        db.session.delete(character)
         db.session.commit()
         flash('Character deleted')
         return redirect(url_for('authentication.user_info', user_id=current_user.id))
-    return render_template('character_delete.html', char=char)
+    return render_template('character_delete.html', character=character)
 
 
 @main.route('/action/<act_id>')
@@ -124,6 +133,9 @@ def action_info(act_id):
 @main.route('/character/<char_id>/actioncreate', methods=['GET', 'POST'])
 @login_required()
 def action_create(char_id):
+    character = Character.query.get(char_id)
+    if current_user.id != character.owner and current_user.role != 'SUPER':
+        return redirect(url_for('authentication.no_peeking'))
     form = ActionCreateForm()
     if form.validate_on_submit():
         action = Action.create_action(char_id=char_id,
@@ -140,6 +152,9 @@ def action_create(char_id):
 @login_required()
 def action_edit(act_id):
     action = Action.query.get(act_id)
+    character = Character.query.get(action.char_id)
+    if current_user.id != character.owner and current_user.role != 'SUPER':
+        return redirect(url_for('authentication.no_peeking'))
     form = ActionCreateForm(obj=action)
     if form.validate_on_submit():
         action.name = form.name.data
@@ -156,6 +171,9 @@ def action_edit(act_id):
 @login_required()
 def action_delete(act_id):
     action = Action.query.get(act_id)
+    character = Character.query.get(action.char_id)
+    if current_user.id != character.owner and current_user.role != 'SUPER':
+        return redirect(url_for('authentication.no_peeking'))
     if request.method == 'POST':
         db.session.delete(action)
         db.session.commit()
