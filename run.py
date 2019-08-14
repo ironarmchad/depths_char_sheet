@@ -14,7 +14,7 @@ if __name__ == '__main__':
                              password='PIANO@230jap',
                              role='SUPER')
         if not Game.query.filter_by(name='No Game').first():
-            Game.create_game(game_name='No Game', game_lore='', st_id=user.id)
+            Game.create_game(game_name='No Game', game_lore='', game_summary="", st_id=user.id)
 
     char_app.run()
 
@@ -28,5 +28,5 @@ else:
                                     password='PIANO@230jap',
                                     role='SUPER')
         if not Game.query.filter_by(name='No Game').first():
-            Game.create_game(game_name='No Game', game_lore='', st_id=user.id)
+            Game.create_game(game_name='No Game', game_lore='', game_summary="", st_id=user.id)
 
