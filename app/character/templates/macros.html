@@ -8,12 +8,12 @@
     <div class="card-footer text-center">
         {% if current_user.id == character.owner %}
         <div class="btn-group">
-            <a class="btn btn-primary btn-sm" href="{{ url_for('game.game_character_view', char_id=character.id) }}" role="button">View</a>
+            <a class="btn btn-primary btn-sm" href="{{ url_for('game.game_view_character', char_id=character.id) }}" role="button">View</a>
             <a class="btn btn-secondary btn-sm" href="{{ url_for('main.character_info', char_id=character.id) }}" role="button">Edit</a>
             <a class="btn btn-danger btn-sm" href="{{ url_for('main.character_delete', char_id=character.id) }}" role="button">Delete</a>
         </div>
         {% else %}
-        <a class="btn btn-primary btn-sm" href="{{ url_for('game.game_character_view', char_id=character.id) }}" role="button">View</a>
+        <a class="btn btn-primary btn-sm" href="{{ url_for('game.game_view_character', char_id=character.id) }}" role="button">View</a>
         {% endif %}
     </div>
 </div>

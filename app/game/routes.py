@@ -23,7 +23,7 @@ def game_create():
     form = GameCreateForm()
     if form.validate_on_submit():
         game = Game.create_game(game_name=form.name.data,
-                                st_id=current_user.id, game_lore=form.lore.data)
+                                st_id=current_user.id, game_lore=form.lore.data, game_summary=form.summary.data)
         return redirect(url_for('game.game_info', game_id=game.id))
     return render_template('game_create.html', form=form)
 
@@ -34,7 +34,7 @@ def game_info(game_id):
     game = Game.query.get(int(game_id))
     st = User.query.get(game.st_id)
     characters = Character.query.filter_by(game_id=game.id)
-    players = [character for character in characters if character.char_type == 'player']
+    players = [(User.query.get(character.owner), character) for character in characters if character.char_type == 'player']
     npcs = [character for character in characters if character.char_type =='npc']
     return render_template('game_info.html', game=game, st=st, players=players, npcs=npcs)
 
@@ -47,6 +47,7 @@ def game_edit(game_id):
     if form.validate_on_submit():
         game.name = form.name.data
         game.lore = form.lore.data
+        game.summary = form.summary.data
         db.session.add(game)
         db.session.commit()
         return redirect(url_for('game.game_info', game_id=game_id))
@@ -61,13 +62,13 @@ def game_delete(game_id):
         db.session.delete(game)
         db.session.commit()
         flash('Game has been deleted.')
-        return redirect('game.game_list')
+        return redirect(url_for('game.game_list'))
     return render_template('game_delete.html', game=game, game_id=game_id)
 
 
 @game_pages.route('/game/character/<char_id>')
 @login_required()
-def game_character_view(char_id):
+def game_view_character(char_id):
     character = Character.query.get(char_id)
     player = User.query.get(character.owner)
     game = Game.query.get(character.game_id)
@@ -76,6 +77,6 @@ def game_character_view(char_id):
     supers = [action for action in actions if action.act_type == 'super']
     items = [action for action in actions if action.act_type == 'item']
     if current_user.id != character.owner and current_user.id != game.st_id:
-        return redirect('authentication.no_peeking')
+        return redirect(url_for('authentication.no_peeking'))
     return render_template('game_view_character.html',
                            character=character, player=player, naturals=naturals, supers=supers, items=items)

@@ -2,34 +2,39 @@
 
 {% block content %}
     <div class="jumbotron p-4">
-        <h3>{{ game.name }}</h3>
-        <h6>Story Teller: {{ st.user_name }}</h6>
+        <h2>{{ game.name }}</h2>
+        <h5>Story Teller: {{ st.user_name }}</h5>
         <hr class="my-4">
     </div>
     <div class="container-fluid">
         <div class="row">
             <div class="col">
-                <p><strong>Lore: </strong>{{ game.lore }}</p>
-                <h6>Player Characters</h6>
-                <ul>
+                <p><strong>Lore: </strong>{{ game.lore }}</p><br>
+                <h4>Player Characters</h4>
+                <div class="row">
                     {% for player in players %}
-                        <li><a href="{{ url_for('game.game_character_view', char_id=player.id) }}">{{ player.name }}</a></li>
+                    <div class="col-4 d-flex">
+                        {{ character_card(player[1], player[0]) }}
+                    </div>
                     {% endfor %}
-                </ul>
+                </div>
                 {% if current_user.id == game.st_id %}
                 <div class="row">
                     <div class="col">
-                        <h6>Non-Player Characters</h6>
+                        <h4>Non-Player Characters</h4>
+                        <div class="row">
+                            {% for npc in npcs %}
+                            <div class="col-4 d-flex">
+                                {{ character_card(npc, st) }}
+                            </div>
+                            {% endfor %}
+                        </div>
                     </div>
+
                     <div class="col">
                         <a class="btn btn-primary btn-sm" href="{{ url_for('main.character_create_core') }}">Add</a>
                     </div>
                 </div>
-                <ul>
-                    {% for npc in npcs %}
-                        <li><a href="{{ url_for('main.character_info', char_id=npc.id) }}">{{ npc.name }}</a></li>
-                    {% endfor %}
-                </ul>
                 {% endif %}
             </div>
             <div class="col-sm-3">

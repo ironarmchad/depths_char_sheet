@@ -11,8 +11,8 @@ class Game(db.Model):
     summary = db.Column(db.String(150))
 
     @classmethod
-    def create_game(cls, game_name, st_id, game_lore, active=True):
-        game = cls(name=game_name, st_id=st_id, lore=game_lore, active=active)
+    def create_game(cls, game_name, st_id, game_lore, game_summary, active=True):
+        game = cls(name=game_name, st_id=st_id, lore=game_lore, summary=game_summary, active=active)
         db.session.add(game)
         db.session.commit()
         return game

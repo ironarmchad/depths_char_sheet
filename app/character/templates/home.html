@@ -63,12 +63,24 @@
                     <div class="col">
                         <a class="btn btn-primary btn-sm" href="{{ url_for('game.game_create') }}">Add</a>
                     </div>
-                </div>
+                </div><br>
+                <h5>as Story Teller</h5>
                 <ul>
-                    {% for game in games: %}
+                    {% for game in st_games: %}
                         <li><a href="{{ url_for('game.game_info', game_id=game.id) }}">{{ game.name }}</a></li>
                     {% endfor %}
-                </ul>
+                </ul><br>
+                <h5>as Player</h5>
+                {% for character in characters: %}
+                {% if character[1].name != 'No Game' %}
+                <li>
+                    <a href="{{ url_for('main.character_info', char_id=character[0].id) }}">{{ character[0].name }}</a>
+                    is a <em>{{ character[0].char_type }}</em> in
+                    <a href="{{ url_for('game.game_info', game_id=character[1].id) }}">{{ character[1].name }}</a>
+                </li>
+                {% endif %}
+                {% endfor %}
+
             </div>
             {% endif %}
         </div>
