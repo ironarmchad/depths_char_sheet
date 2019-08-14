@@ -64,6 +64,7 @@ def game_delete(game_id):
         return redirect('game.game_list')
     return render_template('game_delete.html', game=game, game_id=game_id)
 
+
 @game_pages.route('/game/character/<char_id>')
 @login_required()
 def game_character_view(char_id):

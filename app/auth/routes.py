@@ -59,6 +59,8 @@ def user_list():
         return redirect(url_for('authentication.user_info', user_id=current_user.id))
 
 
+# TODO: Fix user page
+'''
 @authentication.route('/user/<user_id>')
 @login_required()
 def user_info(user_id):
@@ -68,6 +70,7 @@ def user_info(user_id):
         return render_template('user_info.html', user=user, characters=characters)
     else:
         return render_template('no_peeking.html')
+'''
 
 
 @authentication.route('/user/<user_id>/change_role', methods=['GET', 'POST'])
