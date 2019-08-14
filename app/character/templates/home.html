@@ -1,4 +1,5 @@
 {% extends 'layout.html' %}
+
 {% block content %}
     <div class="container-fluid">
         <p>
@@ -23,7 +24,7 @@
             {% if current_user.is_authenticated: %}
 
             <!-- Character Section -->
-            <div class="col">
+            <div class="col-6">
                 <div class="row">
                     <div class="col">
                         <h4>Your Character Sheets</h4>
@@ -31,7 +32,15 @@
                     <div class="col">
                         <a class="btn btn-primary btn-sm" href="{{ url_for('main.character_create_core') }}">Add</a>
                     </div>
+                </div><br>
+                <div class="row">
+                    {% for character in characters: %}
+                    <div class="col-6 d-flex">
+                        {{ character_card(character[0], current_user) }}
+                    </div>
+                    {% endfor  %}
                 </div>
+                <!--
                 <ul>
                     {% for character in characters: %}
                         <li>
@@ -42,6 +51,7 @@
                         </li>
                     {% endfor %}
                 </ul>
+                -->
             </div>
 
             <!-- Games Section -->

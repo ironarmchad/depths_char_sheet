@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, IntegerField, TextAreaField, SelectField, ValidationError
-from wtforms.validators import DataRequired
+from wtforms.validators import DataRequired, Length
 
 
 def check_empty(form, field):
@@ -20,6 +20,7 @@ class CharacterCreateCoreForm(FlaskForm):
     char_type = SelectField('Type', choices=[('', '---'), ('player', 'Player'), ('npc', 'NPC')], validators=[check_empty])
     game_id = SelectField('Type', coerce=int)
     lore = TextAreaField('Lore', render_kw={'rows': 10, 'cols': 20})
+    summary = TextAreaField('Summary', render_kw={'rows': 3, 'cols': 20})
 
 
 class CharacterCreateStatsForm(FlaskForm):
@@ -36,17 +37,10 @@ class CharacterCreateStatsForm(FlaskForm):
     luck = IntegerField('Luck', validators=[DataRequired(), stat_range])
 
 
-class CharacterCreateActionsForm(FlaskForm):
-    name = StringField('Name', validators=[DataRequired()])
-    act_type = SelectField('Type', choices=[('', '---'), ('natural', 'NATURAL'), ('super', 'SUPERNATURAL'), ('item', 'ITEM')], validators=[check_empty])
-    lore = TextAreaField('Lore', render_kw={'rows': 10, 'cols': 20})
-    mechanics = TextAreaField('Mechanics', render_kw={'rows': 10, 'cols': 20})
-
-
-
 class ActionCreateForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
     act_type = SelectField('Type', choices=[('', '---'), ('natural', 'NATURAL'), ('super', 'SUPERNATURAL'), ('item', 'ITEM')], validators=[check_empty])
     lore = TextAreaField('Lore', render_kw={'rows': 10, 'cols': 20})
-    mechanics = TextAreaField('Mechanics', render_kw={'rows': 10, 'cols': 20})
+    summary = TextAreaField('Summary', render_kw={'rows': 3, 'cols': 20}, validators=[Length(max=150)])
+    mechanics = TextAreaField('Mechanics', render_kw={'rows': 3, 'cols': 20}, validators=[Length(max=150)])
 

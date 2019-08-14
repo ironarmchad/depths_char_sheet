@@ -6,6 +6,7 @@ class Character(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     owner = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     name = db.Column(db.String(50), nullable=False, index=True)
+    summary = db.Column(db.String(150))
     char_type = db.Column(db.String(10), nullable=False)
     game_id = db.Column(db.Integer, db.ForeignKey('games.id'))
     lore = db.Column(db.String)
@@ -28,12 +29,14 @@ class Character(db.Model):
                          name,
                          char_type,
                          game_id,
-                         lore):
+                         lore,
+                         summary):
         character = cls(owner=owner,
                         name=name,
                         char_type=char_type,
                         game_id=game_id,
                         lore=lore,
+                        summary=summary,
                         strength=1,
                         reflex=1,
                         vitality=1,
@@ -57,7 +60,8 @@ class Action(db.Model):
     name = db.Column(db.String(30), index=True, nullable=False)
     act_type = db.Column(db.String(10), nullable=False)
     lore = db.Column(db.String)
-    mechanics = db.Column(db.String)
+    summary = db.Column(db.String(150))
+    mechanics = db.Column(db.String(150))
 
     @classmethod
     def create_action(cls, char_id, name, act_type, lore, mechanics):

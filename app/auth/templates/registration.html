@@ -1,11 +1,14 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-
-<div class="container form">
-    <hr><br>
-    {{ form.hidden_tag() }}
-    {{ wtf.quick_form(form) }}
+<div class="container">
+    <form method="post">
+        {{ form.hidden_tag() }}
+        {{ wtf.form_field(form.username) }}
+        {{ wtf.form_field(form.password) }}
+        {{ wtf.form_field(form.confirm) }}
+        <input class="btn btn-primary" type="submit" value="Submit">
+    </form>
 </div>
 
 {% endblock content %}

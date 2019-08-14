@@ -8,6 +8,7 @@ class Game(db.Model):
     st_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     active = db.Column(db.Boolean, nullable=False)
     lore = db.Column(db.String)
+    summary = db.Column(db.String(150))
 
     @classmethod
     def create_game(cls, game_name, st_id, game_lore, active=True):

@@ -55,7 +55,8 @@ def character_create_core():
             char_type=form.char_type.data,
             game_id=form.game_id.data,
             owner=current_user.id,
-            lore=form.lore.data
+            lore=form.lore.data,
+            summary=form.summary.data
         )
         flash('Character created')
         return redirect(url_for('main.character_info', char_id=character.id))
@@ -77,6 +78,7 @@ def character_edit_core(char_id):
         character.char_type = form.char_type.data
         character.game_id = form.game_id.data
         character.lore = form.lore.data
+        character.summary = form.summary.data
         db.session.add(character)
         db.session.commit()
         flash('{} core information is edited.'.format(character.name))

@@ -4,9 +4,14 @@
 
 {% block content %}
 
-    <div class="container form">
-        <hr><br>
-        {{ wtf.quick_form(form) }}
+    <div class="container">
+        <form class="form-group" method="post">
+            {{ form.hidden_tag() }}
+            {{ wtf.form_field(form.username) }}
+            {{ wtf.form_field(form.password) }}
+            {{ wtf.form_field(form.stay_logged_in) }}
+            <input class="btn btn-primary" type="submit" value="Submit">
+        </form>
     </div>
 
 {% endblock content %}
